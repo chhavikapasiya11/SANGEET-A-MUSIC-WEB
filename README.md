@@ -1,0 +1,1 @@
+This is a music website in which i have used the concept of html,css,javascript,php and fetch api.This website serves the purpose of displaying the details about the music album ,artist etc. along with the playlist access to play the music of diferent taste. 
