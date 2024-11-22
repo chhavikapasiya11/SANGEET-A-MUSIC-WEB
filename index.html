@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Web App</title>
+    <link rel="stylesheet" href="musico.css">
+    <link rel="stylesheet" href="utility.css">
+   
+    <style>
+        #saved{
+            position: relative;
+            top:190px;
+        }
+    </style>
+</head>
+<body>
+<div class="container flex black">
+    <div class="left">
+        <div class="home grey m1 rounded">
+            <div class="logo">
+                <img class="invert" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvI8aBFbpOzRTOB-clPxOQvOT1duFNH-oIdw&s" width="90px" alt="logo">
+            </div>
+            <ul>
+                <li><img src="https://icon2.cleanpng.com/20180614/bpw/kisspng-computer-icons-home-page-web-page-web-template-5b21fd7366a035.2971465015289542274204.jpg" width="23px" alt="home">HOME</li>
+                <li><input type="text" id="searchQuery" placeholder="Search your music"></li>
+<button id="btn" onclick="searchMusic()">SEARCH</button>
+<div id="result"></div>
+
+<script>
+    function searchMusic() {
+        const query = document.getElementById('searchQuery').value;
+        if (!query) {
+            alert('Please enter a search term.');
+            return;
+        }
+
+       
+        fetch(`https://spotify23.p.rapidapi.com/search/?q=${encodeURIComponent(query)}&type=multi&offset=0&limit=10&numberOfTopResults=5`, {
+            method: 'GET',
+            headers: {
+                'x-rapidapi-host': 'spotify23.p.rapidapi.com',
+                'x-rapidapi-key': 'ef59c212d9msh5f4ae7689f22529p139c2bjsna88dd0460e2a' // 
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            displayResults(data);
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function displayResults(data) {
+        const resultsDiv = document.getElementById('result'); 
+        resultsDiv.innerHTML = '';  
+
+        
+        if (data && data.tracks && data.tracks.items.length > 0) {
+            data.tracks.items.forEach(track => {
+                const trackDiv = document.createElement('div');
+                trackDiv.innerHTML = `
+                    <h3>${track.data.name}</h3>
+                    <p>Artist: ${track.data.artists.items.map(artist => artist.profile.name).join(', ')}</p>
+                    <p>Album: ${track.data.albumOfTrack.name}</p>
+                `;
+                resultsDiv.appendChild(trackDiv);
+            });
+        } else {
+            resultsDiv.innerHTML = '<p>No results found.</p>';
+        }
+    }
+</script>
+
+                <li><img src="https://cdn-icons-png.flaticon.com/512/2370/2370626.png" width="23px" alt="discover">DISCOVER</li>
+                <li><img src="https://cdn-icons-png.flaticon.com/512/3194/3194844.png" width="23px" alt="playlists">PLAYLISTS</li>
+            </ul>
+        </div>
+        
+        <div class="library grey rounded" style="font-family: Arial, sans-serif; color: white; background-image: url('https://st.depositphotos.com/1943535/2022/i/450/depositphotos_20223203-stock-photo-bass-guitar.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+            <div class="head invert" style="padding: 20px;">
+                <img src="https://icons.veryicon.com/png/o/miscellaneous/website-icon/library-108.png" width="23px" alt="">
+                <div class="line">
+                    <h2>Your Library</h2>
+                    <div class="library-content">
+                       
+                        
+
+                        <div class="category" style="font-family: Arial, sans-serif; color: orange;">
+                            <h4 style="margin-bottom: 10px; margin-top: 30px; margin-left: 10px; font-size: x-large;font-weight: 1200;">Recently Played</h4>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="display: flex; width: 100%; justify-content: space-between;font-weight: 1200; align-items: center; margin-bottom: 15px;margin-top:15px;">
+                                    <a href="Be Mine.mp3" style="color: #d71a24; text-decoration: none; font-weight: bold;">Be mine</a>
+                                    <span style="flex-shrink: 0;">-Shubh</span>
+                                </li>
+                                <li style="display: flex; width: 100%; justify-content: space-between;font-weight: 1200; align-items: center;margin-bottom: 15px;margin-top:15px;">
+                                    <a href="Unstoppable(Pagal-World.Com.In).mp3" style="color: #d71a24; text-decoration: none; font-weight: bold;">Unstoppable</a>
+                                    <span style="flex-shrink: 0;">-Sia</span>
+                                </li>
+                              
+                                <li style="display: flex; width: 100%; justify-content: space-between;font-weight: 1200; align-items: center; margin-bottom: 15px;margin-top:15px;">
+                                    <a href="Slut(PagalNew.Com.Se).mp3" style="color: #d71a24; text-decoration: none; font-weight: bold;">Slug</a>
+                                    <span style="flex-shrink: 0;">-Taylor Swift</span>
+                                </li>
+                                <li style="display: flex; width: 100%; justify-content: space-between;font-weight: 1200; align-items: center; margin-bottom: 15px;margin-top:15px;">
+                                    <a href="Desires(PagalWorld.com.sb).mp3" style="color: #d71a24; text-decoration: none; font-weight: bold;">Desires</a>
+                                    <span style="flex-shrink: 0;">-AP-Dhillon</span>
+                                </li>
+
+                            </ul>
+                        </div>
+                        
+                        
+               
+                        
+                        <div class="category" style="font-family: Arial, sans-serif;margin-top: 30px; color: orange;">
+                            <h4 style="margin-bottom: 10px; margin-top: 30px; margin-left: 10px; font-size: x-large;">Saved tracks</h4>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="display: flex; width: 100%; justify-content: space-between; align-items: center; margin-bottom: 15px;margin-top:15px;">
+                                    <a href="Aaj Bhi - Vishal Mishra 128 Kbps.mp3" style="color: #d71a24; text-decoration: none; font-weight: bold;">Aaj-Bhi</a>
+                                    <span style="flex-shrink: 0;">-Vishal Mishra</span>
+                                </li>
+                                <li style="display: flex; width: 100%; justify-content: space-between; align-items: center;margin-bottom: 15px;margin-top:15px;">
+                                    <a href="Akhiyan - Harkirat Sangha.mp3" style="color: #d71a24; text-decoration: none; font-weight: bold;">Ankhiyan</a>
+                                    <span style="flex-shrink: 0;">-Harkirat-Singh</span>
+                                </li>
+                              
+                                <li style="display: flex; width: 100%; justify-content: space-between; align-items: center; margin-bottom: 15px;margin-top:15px;">
+                                    <a href="Slut(PagalNew.Com.Se).mp3" style="color: #d71a24; text-decoration: none; font-weight: bold;">Slug</a>
+                                    <span style="flex-shrink: 0;">-Taylor Swift</span>
+                                </li>
+                                <li style="display: flex; width: 100%; justify-content: space-between; align-items: center; margin-bottom: 15px;margin-top:15px;">
+                                    <a href="Tere Bina Na Guzara E - Josh Brar 128 Kbps.mp3" style="color: #d71a24; text-decoration: none; font-weight: bold;">Tere bina</a>
+                                    <span style="flex-shrink: 0;">-Josh Brar</span>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <ul>
+                <li><a href="about.html" style="color: white; text-decoration: none;">About Us</a></li>
+                <li><a href="contact.html" style="color: white; text-decoration: none;">Contact Us</a></li>
+                <li><a href="privacy.html" style="color: white; text-decoration: none;">Privacy Policy</a></li>
+                <li><a href="terms.html" style="color: white; text-decoration: none;">Terms and Conditions</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="right grey">
+        <div class="header">
+            <div class="nav invert">
+                <img src="https://cdn0.iconfinder.com/data/icons/arrow-126/24/Triangle_Arrow_Left_Left_Arrow_Ui-512.png" width="20px" alt="">
+                <img src="https://cdn0.iconfinder.com/data/icons/arrow-126/24/Triangle_Arrow_Play_Right_Ui-512.png" width="20px" alt="">
+            </div>
+            <div class="button">
+                <button onclick="window.location.href='signuup.html'">Sign up</button>
+                <button onclick="window.location.href='logino.html'" class="log">Login</button>
+            </div>
+        </div>
+ 
+        <div class="playlist">
+            <h2>Sangeet Playlist...</h2>
+            <div class="cards">
+                
+                <div class="inside">
+                    <img src="https://i.scdn.co/image/ab67616d0000b2738808542c19c653d5f69791d1" width="170px" alt="">
+                    <h3>Happy Hits!</h3>
+                    <p>Hits to boost your mood</p>
+                
+                    <select id="songSelector" onchange="changeSong()">
+                        <option value="Titli Chennai Express 128 Kbps.mp3">Titli - Chennai Express</option>
+                        <option value="Be Mine.mp3">Be mine - Shubh</option>
+                        <option value="Gallan Goodiyaan - Dil Dhadakne Do 128 Kbps.mp3">Gallan Goodiyan - Dil Dhadakne Do</option>
+                    </select>
+                
+                    <button onclick="playMusic()">PLAY</button>
+                    <button onclick="stopMusic()">STOP</button>
+                
+                    <audio id="audioPlayer">
+                        <source id="audioSource" src="Titli Chennai Express 128 Kbps.mp3" type="audio/mp3">
+                        Your browser does not support the audio element.
+                    </audio>
+                
+                    <script>
+                        function playMusic() {
+                            const audioPlayer = document.getElementById('audioPlayer');
+                            audioPlayer.play();
+                        }
+                
+                        function stopMusic() {
+                            const audioPlayer = document.getElementById('audioPlayer');
+                            audioPlayer.pause();
+                            audioPlayer.currentTime = 0;
+                        }
+                
+                        function changeSong() {
+                            const songSelector = document.getElementById('songSelector');
+                            const selectedSong = songSelector.value;
+                            const audioPlayer = document.getElementById('audioPlayer');
+                            const audioSource = document.getElementById('audioSource');
+                
+                            audioSource.src = selectedSong;
+                            audioPlayer.pause();
+                            audioPlayer.load();
+                            audioPlayer.play();
+                        }
+                    </script>
+                </div>
+                
+                <div class="inside">
+                    <img src="https://i.scdn.co/image/ab67616d00001e0248cfaeb00b65e96d3f57cf61" width="170px" alt="">
+                    <h3>Calming Acoustic</h3>
+                    <p>Hits to calm your mood</p>
+                
+                    <select id="songSelector2" onchange="changeSong2()">
+                        <option value="Kesariya-Brahmastra 128 Kbps.mp3">Kesariya Brahmastra</option>
+                        <option value="Akhiyan - Harkirat Sangha.mp3">Akhiyan - Harkirat Sangha</option>
+                    </select>
+                
+                    <button onclick="playMusic2()">PLAY</button>
+                    <button onclick="stopMusic2()">STOP</button>
+                
+                    <audio id="audioPlayer2">
+                        <source id="audioSource2" src="Kesariya-Brahmastra 128 Kbps.mp3" type="audio/mp3">
+                        Your browser does not support the audio element.
+                    </audio>
+                
+                    <script>
+                        function playMusic2() {
+                            const audioPlayer = document.getElementById('audioPlayer2');
+                            if (audioPlayer.paused || audioPlayer.ended) {
+                                audioPlayer.play();
+                            }
+                        }
+                
+                        function stopMusic2() {
+                            const audioPlayer = document.getElementById('audioPlayer2');
+                            if (!audioPlayer.paused) {
+                                audioPlayer.pause();
+                                audioPlayer.currentTime = 0; // Reset the audio to the start
+                            }
+                        }
+                
+                        function changeSong2() {
+                            const songSelector = document.getElementById('songSelector2');
+                            const selectedSong = songSelector.value;
+                            const audioPlayer = document.getElementById('audioPlayer2');
+                            const audioSource = document.getElementById('audioSource2');
+                
+                            audioSource.src = selectedSong;
+                            audioPlayer.pause(); // Pause any ongoing playback
+                            audioPlayer.load(); // Load the new song
+                        }
+                    </script>
+                </div>
+                
+
+                
+
+                <div class="inside">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHArp_QMHZ6-mScbDWPpLBYg-oNAYp8dH6Wg&s" width="170px" height="180px" alt="">
+                    <h3>  Lofi Chill</h3>
+                    <b>Lazy chilling beats</b>
+                    <select id="songSelector3" onchange="changeSong3()">
+                        <option value="Aaj Bhi - Vishal Mishra 128 Kbps.mp3">Aaj Bhi</option>
+                        <option value="Banjaara - Ek Villain 128 Kbps.mp3">Banjaara</option>
+                    </select>
+                
+                    <button onclick="playMusic3()">PLAY</button>
+                    <button onclick="stopMusic3()">STOP</button>
+                
+                    <audio id="audioPlayer3">
+                        <source id="audioSource3" src="Aaj Bhi - Vishal Mishra 128 Kbps.mp3" type="audio/mp3">
+                        Your browser does not support the audio element.
+                    </audio>
+                
+                    <script>
+                        function playMusic3() {
+                            const audioPlayer = document.getElementById('audioPlayer3');
+                            audioPlayer.play();
+                        }
+                
+                        function stopMusic3() {
+                            const audioPlayer = document.getElementById('audioPlayer3');
+                            audioPlayer.pause();
+                            audioPlayer.currentTime = 0;
+                        }
+                
+                        function changeSong3() {
+                            const songSelector = document.getElementById('songSelector3');
+                            const selectedSong = songSelector.value;
+                            const audioPlayer = document.getElementById('audioPlayer3');
+                            const audioSource = document.getElementById('audioSource3');
+                
+                            audioSource.src = selectedSong;
+                            audioPlayer.pause();
+                            audioPlayer.load();
+                        }
+                    </script>
+                </div>
+                
+                <div class="inside">
+                    <img src="https://c.saavncdn.com/191/Viral-Hits-English-2015-500x500.jpg" width="170px" alt="Viral Hits Album Cover">
+                    <h3>Viral Hits!!</h3>
+                    <p>Viral and trending songs</p>
+                    <select id="songSelector4" onchange="changeSong4()">
+                        <option value="Tauba Tauba - Bad Newz 128 Kbps (1).mp3">Tauba-Tauba</option>
+                        <option value="Tere Bina Na Guzara E - Josh Brar 128 Kbps.mp3">Tere bina na</option>
+                    </select>
+                    
+                    <button onclick="playMusic4()">PLAY</button>
+                    <button onclick="stopMusic4()">STOP</button>
+                    
+                    <audio id="audioPlayer4">
+                        <source id="audioSource4" src=""Tauba Tauba - Bad Newz 128 Kbps (1).mp3"" type="audio/mp3">
+                        Your browser does not support the audio element.
+                    </audio>
+                    
+                    <script>
+                        function playMusic4() {
+                            const audioPlayer = document.getElementById('audioPlayer4');
+                            audioPlayer.play();  
+                        }
+                
+                        function stopMusic4() {
+                            const audioPlayer = document.getElementById('audioPlayer4');
+                            audioPlayer.pause();
+                            audioPlayer.currentTime = 0;
+                        }
+                
+                        function changeSong4() {
+                            const songSelector = document.getElementById('songSelector4');
+                            const selectedSong = songSelector.value;
+                            const audioPlayer = document.getElementById('audioPlayer4');
+                            const audioSource = document.getElementById('audioSource4');
+                            
+                            audioSource.src = selectedSong;
+                            audioPlayer.pause();
+                            audioPlayer.load();
+                            audioPlayer.play();
+                        }
+                    </script>
+                </div>
+                
+                <div class="inside">
+                    <img src="https://static.qobuz.com/images/covers/6b/kb/sn2qagoaekb6b_600.jpg" width="170px" alt="The Jazz Playlist Cover">
+                    <h3>The Jazz Playlist</h3>
+                    <p>Slow and soft jazz music</p>
+                    
+                    <select id="songSelector5" onchange="changeSong5()">
+                        <option value="smooth-jazz-saxophone-solo-with-a-lofi-vibe-253950.mp3">Smooth Jazz</option>
+                        <option value="O Mere Dil Ke Chain Mere Jeevan Saathi 128 Kbps.mp3">O Mere Dil Ke Chain</option>
+                    </select>
+                    
+                    <button onclick="playMusic5()">PLAY</button>
+                    <button onclick="stopMusic5()">STOP</button>
+                    
+                    <audio id="audioPlayer5">
+                        <source id="audioSource5" src="smooth-jazz-saxophone-solo-with-a-lofi-vibe-253950.mp3" type="audio/mp3">
+                        Your browser does not support the audio element.
+                    </audio>
+                    
+                    <script>
+                        function playMusic5() {
+                            const audioPlayer = document.getElementById('audioPlayer5');
+                            audioPlayer.play();  
+                        }
+                
+                        function stopMusic5() {
+                            const audioPlayer = document.getElementById('audioPlayer5');
+                            audioPlayer.pause();  
+                            audioPlayer.currentTime = 0;  
+                        }
+                
+                        function changeSong5() {
+                            const songSelector = document.getElementById('songSelector5');
+                            const selectedSong = songSelector.value;
+                            const audioPlayer = document.getElementById('audioPlayer5');
+                            const audioSource = document.getElementById('audioSource5');
+                            
+                            audioSource.src = selectedSong;
+                            audioPlayer.pause();
+                            audioPlayer.load();
+                            audioPlayer.play();
+                        }
+                    </script>
+                </div>
+                
+            </div>
+        </div>
+
+        
+        <div class="trending">
+            <h2>Trending Now</h2>
+            <div class="cards">
+                <div class="inside">
+                    <img src="https://geo-static.traxsource.com/files/images/f1c589ee49a0dab4148a721eb8d718b3.jpg" width="170px" alt="Top Global Playlist Cover">
+                    <h3>Top Global</h3>
+                    <p>World's hottest tracks</p>
+                    
+                    <select id="songSelector6" onchange="changeSong6()">
+                        <option value="Unstoppable(Pagal-World.Com.In).mp3">Unstoppable - Sia</option>
+                        <option value="Senorita - Zindagi Na Milegi Dobara 128 Kbps.mp3">Senorita</option>
+                        <option value="Gallan Goodiyaan - Dil Dhadakne Do 128 Kbps.mp3">Gallan Goodiyan - Dil Dhadakne Do</option>
+                    </select>
+                    
+                    <button onclick="playMusic6()">PLAY</button>
+                    <button onclick="stopMusic6()">STOP</button>
+                    
+                    <audio id="audioPlayer6">
+                        <source id="audioSource6" src="Unstoppable(Pagal-World.Com.In).mp3" type="audio/mp3">
+                        Your browser does not support the audio element.
+                    </audio>
+                    
+                    <script>
+                        function playMusic6() {
+                            const audioPlayer = document.getElementById('audioPlayer6');
+                            audioPlayer.play();  
+                        }
+                
+                        function stopMusic6() {
+                            const audioPlayer = document.getElementById('audioPlayer6');
+                            audioPlayer.pause();  
+                            audioPlayer.currentTime = 0;  
+                        }
+                
+                        function changeSong6() {
+                            const songSelector = document.getElementById('songSelector6');
+                            const selectedSong = songSelector.value;
+                            const audioPlayer = document.getElementById('audioPlayer6');
+                            const audioSource = document.getElementById('audioSource6');
+                            
+                            audioSource.src = selectedSong;
+                            audioPlayer.pause();
+                            audioPlayer.load();
+                            audioPlayer.play();
+                        }
+                    </script>
+                </div>
+                
+                <div class="inside">
+                    <img src="https://img.freepik.com/free-vector/summer-background-design_1282-2.jpg" width="170px" alt="Summer Vibes Playlist Cover">
+                    <h3>Summer Vibes</h3>
+                    <p>Perfect summer beats</p>
+                    
+                    <select id="songSelector7" onchange="changeSong7()">
+                        <option value="Summer High(PagalWorld.com.sb).mp3">Summer High</option>
+                        <option value="Desires(PagalWorld.com.sb).mp3">Desires</option>
+                    </select>
+                    
+                    <button onclick="playMusic7()">PLAY</button>
+                    <button onclick="stopMusic7()">STOP</button>
+                    
+                    <audio id="audioPlayer7">
+                        <source id="audioSource7" src="Summer High(PagalWorld.com.sb).mp3" type="audio/mp3">
+                        Your browser does not support the audio element.
+                    </audio>
+                    
+                    <script>
+                        function playMusic7() {
+                            const audioPlayer = document.getElementById('audioPlayer7');
+                            audioPlayer.play();  
+                        }
+                
+                        function stopMusic7() {
+                            const audioPlayer = document.getElementById('audioPlayer7');
+                            audioPlayer.pause();  
+                            audioPlayer.currentTime = 0;  
+                        }
+                
+                        function changeSong7() {
+                            const songSelector = document.getElementById('songSelector7');
+                            const selectedSong = songSelector.value;
+                            const audioPlayer = document.getElementById('audioPlayer7');
+                            const audioSource = document.getElementById('audioSource7');
+                            
+                            audioSource.src = selectedSong;
+                            audioPlayer.pause();
+                            audioPlayer.load();
+                            audioPlayer.play();
+                        }
+                    </script>
+                </div>
+                
+            </div>
+        </div>
+
+       
+        <div class="recommended-artists">
+            <h2>Recommended Artists</h2>
+            <div class="cards">
+                <div class="inside">
+                    <img src="https://ca-times.brightspotcdn.com/dims4/default/9987c12/2147483647/strip/true/crop/3373x2248+0+0/resize/1200x800!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F08%2Fb4%2Fea3f92a3416b8a990129fe40d658%2Fhttps-delivery-gettyimages.com%2Fdownloads%2F1591259311" width="170px" height="170px" alt="Taylor Swift">
+                    <h3>Taylor Swift</h3>
+                    <p>Top tracks and albums</p>
+                
+                    <select id="songSelector8" onchange="changeSong8()">
+                        <option value="Love-Story(PagalNew.Com.Se).mp3">Love-story</option>
+                        <option value="Slut(PagalNew.Com.Se).mp3">Slut</option>
+                    </select>
+                
+                    <button onclick="playMusic8()">PLAY</button>
+                    <button onclick="stopMusic8()">STOP</button>
+                
+                    <audio id="audioPlayer8">
+                        <source id="audioSource8" src="Love-Story(PagalNew.Com.Se).mp3" type="audio/mp3">
+                        Your browser does not support the audio element.
+                    </audio>
+                
+                    <script>
+                        function playMusic8() {
+                            const audioPlayer = document.getElementById('audioPlayer8');
+                            audioPlayer.play();  
+                        }
+                
+                        function stopMusic8() {
+                            const audioPlayer = document.getElementById('audioPlayer8');
+                            audioPlayer.pause();  
+                            audioPlayer.currentTime = 0;  
+                        }
+                
+                        function changeSong8() {
+                            const songSelector = document.getElementById('songSelector8');
+                            const selectedSong = songSelector.value;
+                            const audioPlayer = document.getElementById('audioPlayer8');
+                            const audioSource = document.getElementById('audioSource8');
+                            
+                            audioSource.src = selectedSong;
+                            audioPlayer.pause();
+                            audioPlayer.load();
+                            audioPlayer.play();
+                        }
+                    </script>
+                </div>
+                
+                <div class="inside">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKIqW4XT2Ke21VZEqswYz_fm6bff9jSZXUyg&s" width="170px" alt="Karan Aujla">
+                    <h3>Karan Aujla</h3>
+                    <p>Latest releases</p>
+                
+                    <select id="songSelector9" onchange="changeSong9()">
+                        <option value="Tauba Tauba - Bad Newz 128 Kbps (1).mp3">Tauba Tauba</option>
+                        <option value="Be Mine.mp3">Be mine</option>
+                    </select>
+                
+                    <button onclick="playMusic9()">PLAY</button>
+                    <button onclick="stopMusic9()">STOP</button>
+                
+                    <audio id="audioPlayer9">
+                        <source id="audioSource9" src="Tauba Tauba - Bad Newz 128 Kbps (1).mp3" type="audio/mp3">
+                        Your browser does not support the audio element.
+                    </audio>
+                
+                    <script>
+                        function playMusic9() {
+                            const audioPlayer = document.getElementById('audioPlayer9');
+                            audioPlayer.play();  
+                        }
+                
+                        function stopMusic9() {
+                            const audioPlayer = document.getElementById('audioPlayer9');
+                            audioPlayer.pause();  
+                            audioPlayer.currentTime = 0;  
+                        }
+                
+                        function changeSong9() {
+                            const songSelector = document.getElementById('songSelector9');
+                            const selectedSong = songSelector.value;
+                            const audioPlayer = document.getElementById('audioPlayer9');
+                            const audioSource = document.getElementById('audioSource9');
+                            
+                            audioSource.src = selectedSong;
+                            audioPlayer.pause();
+                            audioPlayer.load();
+                            audioPlayer.play();
+                        }
+                    </script>
+                </div>
+                
+            </div>
+        </div>
+
+        
+        
+        </div>
+    </div>
+</div>
+</body>
+</html>
